@@ -2,6 +2,7 @@ import time
 import cv2 as cv
 from facenet import FaceNet
 from haar import HAAR
+from ros import ROSImage
 
 
 ANCHOR_SHAPE = (96, 96)
@@ -34,6 +35,8 @@ def verify(anchor_path):
 
 
 def find():
+    rosimg = ROSImage()
+    talker = rosimg.gen_talker('/ocp/draw_image/compressed')
     camera = cv.VideoCapture(0)
     haar = HAAR()
     facenet = FaceNet('database')
@@ -51,11 +54,9 @@ def find():
                        cv.FONT_HERSHEY_SIMPLEX, 0.3, color, 1)
             cv.putText(drawed_img, str(confidence), (x+5, y+30),
                        cv.FONT_HERSHEY_SIMPLEX, 0.3, color, 1)
-        cv.imshow('Camera', drawed_img)
+        talker.push(drawed_img)
         end = time.time()
         print('Total estimated time: {:.4f}'.format(end-start))
-        if cv.waitKey(10) & 0xFF == ord('q'):
-            break
 
 
 # Main
