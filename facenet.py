@@ -1,6 +1,6 @@
 import numpy as np
 import cv2 as cv
-# import tensorflow as tf
+import tensorflow as tf
 import tflite_runtime.interpreter as tflite
 import glob
 import os
@@ -13,22 +13,22 @@ TFLITE_MODEL = 'models/facenet_quant_postprocess.tflite'
 EDGETPU_TFLITE_MODEL = 'models/facenet_quant_postprocess_edgetpu.tflite'
 
 
-# def convert():
-#     def representative_dataset_gen():
-#         for _ in range(1024):
-#             batch_imgs = np.array(np.random.rand(
-#                 1, 160, 160, 3), dtype=np.float32)
-#             yield [batch_imgs]
-#     model = tf.keras.models.load_model(MODEL)
-#     converter = tf.lite.TFLiteConverter.from_keras_model(model)
-#     converter.optimizations = [tf.lite.Optimize.DEFAULT]
-#     converter.representative_dataset = representative_dataset_gen
-#     converter.target_spec.supported_ops = [
-#         tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
-#     converter.inference_input_type = tf.uint8
-#     converter.inference_output_type = tf.uint8
-#     tflite_model = converter.convert()
-#     open(TFLITE_MODEL, 'wb').write(tflite_model)
+def convert():
+    def representative_dataset_gen():
+        for _ in range(1024):
+            batch_imgs = np.array(np.random.rand(
+                1, 160, 160, 3), dtype=np.float32)
+            yield [batch_imgs]
+    model = tf.keras.models.load_model(MODEL)
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    converter.representative_dataset = representative_dataset_gen
+    converter.target_spec.supported_ops = [
+        tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+    converter.inference_input_type = tf.uint8
+    converter.inference_output_type = tf.uint8
+    tflite_model = converter.convert()
+    open(TFLITE_MODEL, 'wb').write(tflite_model)
 
 
 class FaceNet:
