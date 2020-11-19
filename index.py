@@ -56,6 +56,8 @@ def find():
                        cv.FONT_HERSHEY_SIMPLEX, 0.3, color, 1)
         talker.push(drawed_img)
         end = time.time()
+        if (end - start) < 0.1:
+            time.sleep(0.1-end+start)
         print('Total estimated time: {:.4f}'.format(end-start))
 
 
