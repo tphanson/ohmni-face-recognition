@@ -7,7 +7,7 @@ class HAAR:
             cv.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
     def detect(self, img):
-        faces = self.detector.detectMultiScale(img, 1.05, 5)
+        faces = self.detector.detectMultiScale(img, 1.1, 5)
         return faces
 
     def align(self):
